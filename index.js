@@ -1,9 +1,16 @@
 import express from "express";
+import db from "./config/database.js";
+import productRoutes from "./router/index.js";
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("welcome");
-});
+try {
+  await db.authenticate();
+  console.log("Database connected...");
+} catch (error) {
+  console.error("Connection error:", error);
+}
+
+app.use(productRoutes);
 
 app.listen(5000, () => console.log("server running at 5000"));
